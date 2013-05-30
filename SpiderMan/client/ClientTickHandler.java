@@ -53,8 +53,8 @@ public class ClientTickHandler implements ITickHandler
     {
         if (!(event.entityLiving instanceof EntityPlayer)) return;
         EntityPlayer eventPlayer = (EntityPlayer)event.entityLiving;
-        //Check if the damage should be removed
         
+        //Check if the damage should be removed        
         if (hasSpiderSuit == true || hasSuit > 0 || hasPants == true)
         {   	
         event.distance = 0F;
@@ -251,8 +251,7 @@ public class ClientTickHandler implements ITickHandler
                     this.webTimer = 100;
                 }
             }
-            
-                        
+                                  
 
             if (var2.currentScreen == null && !Keyboard.isKeyDown(webKey) && webKeyDown)
             {               
@@ -273,15 +272,10 @@ public class ClientTickHandler implements ITickHandler
                 int var7 = pos.blockZ;
                                 
                 
-                this.sendweb(var5, var6, var7, this.webTimer);
+                this.sendweb();
                 this.webTimer = 0;
             }
             
-
-            if (var2.currentScreen == null && !Keyboard.isKeyDown(pulseboltKey) && pulseboltKeyDown)
-            {
-            	this.sendBullet(1);
-            }
 
             if (!var3.onGround)
             {
@@ -308,36 +302,12 @@ public class ClientTickHandler implements ITickHandler
         }
     }
 
-    private void sendExplosion(int var1, int var2, int var3, int time)
-    {
-        ByteArrayOutputStream var4 = new ByteArrayOutputStream();
-        DataOutputStream var5 = new DataOutputStream(var4);
-        int[] var6 = new int[] {1, var1, var2, var3, time};
-
-        try
-        {
-            for (int var7 = 0; var7 < var6.length; ++var7)
-            {
-                var5.writeInt(var6[var7]);
-            }
-        }
-        catch (IOException var8)
-        {
-            ;
-        }
-
-        Packet250CustomPayload var9 = new Packet250CustomPayload();
-        var9.channel = "SpiderMan_C";
-        var9.data = var4.toByteArray();
-        var9.length = var4.size();
-        PacketDispatcher.sendPacketToServer(var9);
-    }
-
-    private void sendweb(int var1, int var2, int var3, int var4)
+  
+    private void sendweb()
     {
         ByteArrayOutputStream var5 = new ByteArrayOutputStream();
         DataOutputStream var6 = new DataOutputStream(var5);
-        int[] var7 = new int[] {0, var1, var2, var3, var4};
+        int[] var7 = new int[] {0};
 
         try
         {
@@ -358,57 +328,7 @@ public class ClientTickHandler implements ITickHandler
         PacketDispatcher.sendPacketToServer(var10);
     }
 
-    private void sendBolt(int var2, int var3, int var4)
-    {
-        ByteArrayOutputStream var6 = new ByteArrayOutputStream();
-        DataOutputStream var7 = new DataOutputStream(var6);
-        int[] var8 = new int[] {2, var2, var3, var4};
-
-        try
-        {
-            for (int var9 = 0; var9 < var8.length; ++var9)
-            {
-                var7.writeInt(var8[var9]);
-            }
-        }
-        catch (IOException var10)
-        {
-            ;
-        }
-
-        Packet250CustomPayload var11 = new Packet250CustomPayload();
-        var11.channel = "SpiderMan_C";
-        var11.data = var6.toByteArray();
-        var11.length = var6.size();
-        PacketDispatcher.sendPacketToServer(var11);
-    }
-
-    private void sendBullet(int var2)
-    {
-        ByteArrayOutputStream var7 = new ByteArrayOutputStream();
-        DataOutputStream var8 = new DataOutputStream(var7);
-        int[] var9 = new int[] {3, var2};
-
-        try
-        {
-            for (int var10 = 0; var10 < var9.length; ++var10)
-            {
-                var8.writeInt(var9[var10]);
-            }
-        }
-        catch (IOException var11)
-        {
-            ;
-        }
-
-        Packet250CustomPayload var12 = new Packet250CustomPayload();
-        var12.channel = "SpiderMan_C";
-        var12.data = var7.toByteArray();
-        var12.length = var7.size();
-        PacketDispatcher.sendPacketToServer(var12);
-    }
-    
-  
+      
     private void handleHelmet(int var1)
     {
         Minecraft var2 = Minecraft.getMinecraft();

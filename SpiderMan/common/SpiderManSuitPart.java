@@ -13,17 +13,11 @@ public class SpiderManSuitPart extends ItemArmor implements IArmorTextureProvide
 {
 	private String itemTexture;
 	
-    public SpiderManSuitPart(int var1, EnumArmorMaterial var2, int var3, int var4)
+    public SpiderManSuitPart(int var1, EnumArmorMaterial var2, int var3, int var4, String texture)
     {
         super(var1, var2, 0, var4);
+        itemTexture = texture;
         this.setCreativeTab(CreativeTabs.tabCombat);
-    }
-    
-    public String getTexturePart(String texture)
-    {
-    	itemTexture = texture;
-		return itemTexture;
-    	
     }
 
     public String getTextureFile()

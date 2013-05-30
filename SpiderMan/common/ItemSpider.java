@@ -25,7 +25,7 @@ public class ItemSpider extends ItemFood
     public void registerIcons(IconRegister iconRegister)
     {
     	
-             itemIcon = iconRegister.registerIcon("Slender:childsoul");
+             itemIcon = iconRegister.registerIcon("SpiderMan:spider");
              
     }
     

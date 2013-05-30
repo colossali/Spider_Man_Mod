@@ -2,15 +2,19 @@ package colossali.SpiderMan.common;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class ItemSpiderSilk extends Item
+public class ItemWebBall extends Item
 {
-    protected ItemSpiderSilk(int var1)
+    public ItemWebBall(int par1)
     {
-        super(var1);
+        super(par1);
+        this.setHasSubtypes(true);
+        this.setMaxDamage(64);
         this.setCreativeTab(CreativeTabs.tabMaterials);
     }
 
@@ -19,12 +23,8 @@ public class ItemSpiderSilk extends Item
     public void registerIcons(IconRegister iconRegister)
     {
     	
-             itemIcon = iconRegister.registerIcon("SpiderMan:cloth");
+             itemIcon = iconRegister.registerIcon("SpiderMan:webball");
              
     }
-    
-    public String getTextureFile()
-    {
-        return mod_spiderman.itemsPath;
-    }
+
 }

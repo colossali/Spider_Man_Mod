@@ -1,5 +1,7 @@
 package colossali.SpiderMan.common;
 
+import colossali.SpiderMan.entities.EntityWebBall;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import cpw.mods.fml.common.network.IPacketHandler;
@@ -32,67 +34,10 @@ public class ServerPacketHandler implements IPacketHandler
                 case 0:
                     var6 = MinecraftServer.getServer().worldServerForDimension(var4.dimension);
                     var7 = var5.readInt();
-                    var8 = var5.readInt();
-                    var9 = var5.readInt();
-                    int var10 = var5.readInt();
-                    
 
-                    for (int var11 = -(2 + var10 / 10); var11 < 1 + var10 / 10; ++var11)
-                    {
-                        for (int var12 = -(2 + var10 / 10); var12 < 1 + var10 / 10; ++var12)
-                        {
-                            if (var6.getBlockId(var7 + var11, var8, var9 + var12) == 0)
-                            
-                                var6.setBlock(var7 + var11, var8, var9 + var12, Block.web.blockID);
-                            
-                        }
-                    }
+                    var6.spawnEntityInWorld(new EntityWebBall(var6, var4));                   
                     	
                     return;
-
-                case 1:
-                    var6 = MinecraftServer.getServer().worldServerForDimension(var4.dimension);
-                    var7 = var5.readInt();
-                    var8 = var5.readInt();
-                    var9 = var5.readInt();
-                    var10 = var5.readInt();
-
-                    var6.createExplosion(var4, (double)var7, (double)var8, (double)var9, var10, false);
-                    var4.inventory.damageArmor(40);
-
-                    return;
-
-                case 2:
-                    var6 = MinecraftServer.getServer().worldServerForDimension(var4.dimension);
-                    var7 = var5.readInt();
-                    var8 = var5.readInt();
-                    var9 = var5.readInt();
-
-                    var6.spawnEntityInWorld(new EntityLightningBolt(var6, (double)var7 , (double)var8 , (double)var9 ));
-
-                    return;
-                    
-                case 3:
-                	
-                    var6 = MinecraftServer.getServer().worldServerForDimension(var4.dimension);
-                    var7 = var5.readInt();
-
-                    EntityFishHook var16 = new EntityFishHook(var6, var4);
-
-                    Vec3 look = var4.getLookVec();
-                    var16.motionX = look.xCoord * 0.1;
-                    var16.motionY = look.yCoord * 0.1;
-                    var16.motionZ = look.zCoord * 0.1;
-                    
-                    var6.spawnEntityInWorld(var16);
-                    
-                    if (var16.isCollided)
-                    {
-                        var4.setPositionAndUpdate(var16.posX, var16.posY, var16.posZ);
-                    }
-
-                    return;
-                    
                 	
 
             }

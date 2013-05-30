@@ -69,14 +69,13 @@ public class mod_spiderman
     public static int SpiderManShoesID = 4090;
     public static int SpiderSilkClothID = 4120;
     public static int RadioactiveSpiderID = 4100;
+    public static int WebShooterID = 4121;
+    public static int WebBallItemID = 4122;
     public static int WebBallID = 4101;
-    public static int RadSpiID = 411;
-    
-
+    public static int RadSpiID = 411; 
     
     public static int webKey = 44;
-    public static int stringKey = 45;
-      
+    public static int stringKey = 45;      
 
     public static Item SpiderManMask;
     public static Item SpiderManSuit;
@@ -84,7 +83,8 @@ public class mod_spiderman
     public static Item SpiderManShoes;
     public static Item RadioactiveSpider;
     public static Item SpiderSilkCloth;
-    public static Item WebBall;
+    public static Item WebShooter;
+    public static Item WebBallItem;
     
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent var1)
@@ -117,14 +117,20 @@ public class mod_spiderman
             var3 = var2.get("Spider Silk Cloth", "item", 4120);
             SpiderSilkClothID = var3.getInt(4120);
             
+            var3 = var2.get("Web Shooter", "item", 4121);
+            WebShooterID = var3.getInt(4121);
+            
             var3 = var2.get("Web Ball ID", "item", 4101);
             WebBallID = var3.getInt(4101);
             
+            var3 = var2.get("Web Ball Item ID", "item", 4122);
+            WebBallItemID = var3.getInt(4122);
+            
             var3 = var2.get("webKey", "keybinding", 44);
             webKey = var3.getInt(44);
+            
             var3 = var2.get("stringKey", "keybinding", 44);
             stringKey = var3.getInt(42);
-
    	 
       	 
         }
@@ -144,13 +150,15 @@ public class mod_spiderman
     public void load(FMLInitializationEvent var1)
     {
     	
-     SpiderManMask = (new SpiderManSuitPart(SpiderManMaskID, EnumArmorMaterial.DIAMOND, 1, 0)).setUnlocalizedName("Spider Man Mask");
-     SpiderManSuit = (new SpiderManSuitPart(SpiderManSuitID, EnumArmorMaterial.DIAMOND, 1, 1).setUnlocalizedName("Spider Man Suit"));
-     SpiderManPants = (new SpiderManSuitPart(SpiderManPantsID, EnumArmorMaterial.DIAMOND, 1, 2)).setUnlocalizedName("Spider Man Pants");
-     SpiderManShoes = (new SpiderManSuitPart(SpiderManShoesID, EnumArmorMaterial.DIAMOND, 1, 3)).setUnlocalizedName("Spider Man Shoes");
+     SpiderManMask = new SpiderManSuitPart(SpiderManMaskID, EnumArmorMaterial.DIAMOND, 1, 0, "mask").setUnlocalizedName("Spider Man Mask");
+     SpiderManSuit = new SpiderManSuitPart(SpiderManSuitID, EnumArmorMaterial.DIAMOND, 1, 1, "chest").setUnlocalizedName("Spider Man Suit");
+     SpiderManPants = new SpiderManSuitPart(SpiderManPantsID, EnumArmorMaterial.DIAMOND, 1, 2, "pants").setUnlocalizedName("Spider Man Pants");
+     SpiderManShoes = new SpiderManSuitPart(SpiderManShoesID, EnumArmorMaterial.DIAMOND, 1, 3, "shoes").setUnlocalizedName("Spider Man Shoes");
      SpiderSilkCloth = new ItemSpiderSilk(SpiderSilkClothID).setUnlocalizedName("Spider Silk Cloth");
      RadioactiveSpider = new ItemSpider(RadioactiveSpiderID, 4, false).setUnlocalizedName("Radioactive Spider");
-	
+     WebShooter = new ItemWebShooter(WebShooterID, EnumToolSpiderMan.SLENDER).setUnlocalizedName("Web Shooter").setFull3D();
+     WebBallItem = new ItemWebBall(WebBallItemID).setUnlocalizedName("WebBallItem");
+     
    	 proxy.load();
    	 
    	 
@@ -160,7 +168,7 @@ public class mod_spiderman
       EntityRegistry.registerGlobalEntityID(RadioactiveSpider.class, "Radioactive Spider", RadSpiID, 96210, 11020332);
       EntityRegistry.registerModEntity(RadioactiveSpider.class, "Radioactive Spider", RadSpiID, this, 1000, 1, false);
       LanguageRegistry.instance().addStringLocalization("entity.RadioactiveSpider.name", "en_US", "Radioactive Spider");
-      ModLoader.addSpawn(RadioactiveSpider.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.jungle);
+      ModLoader.addSpawn(RadioactiveSpider.class, 2, 1, 3, EnumCreatureType.monster, BiomeGenBase.jungle);
       
      LanguageRegistry.addName(mod_spiderman.SpiderManMask, "Spider Man Mask");
      LanguageRegistry.addName(mod_spiderman.SpiderManSuit, "Spider Man Suit");
@@ -184,6 +192,15 @@ public class mod_spiderman
         
         ModLoader.addRecipe(new ItemStack(SpiderManShoes, 1), new Object[]
         		{"s s", "s s", "   ", 's', mod_spiderman.SpiderSilkCloth});
+        
+        ModLoader.addRecipe(new ItemStack(WebBallItem, 1), new Object[]
+        		{"sss", "sss", "sss", 's', Item.silk});
+        
+        ModLoader.addRecipe(new ItemStack(WebBallItem, 9), new Object[]
+        		{"sss", "srs", "sss", 's', Item.silk, 'r', RadioactiveSpider});
+        
+        ModLoader.addRecipe(new ItemStack(WebShooter, 1), new Object[]
+        		{"iii", "grg", "ddd", 'i', Item.ingotIron, 'g', Item.ingotGold, 'r', RadioactiveSpider, 'd', Item.diamond } );
         
         ModLoader.addRecipe(new ItemStack(SpiderSilkCloth, 3), new Object[]
         		{"rwr", "wsw", "bwb", Character.valueOf('r'), new ItemStack(Item.dyePowder, 1, 1), Character.valueOf('b'), new ItemStack(Item.dyePowder, 1, 0), 'w', Item.silk, 's', mod_spiderman.RadioactiveSpider});
