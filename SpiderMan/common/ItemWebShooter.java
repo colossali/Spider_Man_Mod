@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import colossali.SpiderMan.entities.EntityWebBall;
+import colossali.SpiderMan.entities.EntityWebSwing;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,14 +34,8 @@ public class ItemWebShooter extends Item
     protected float efficiencyOnProperMaterial = 7.0F;
     public static final Block[] blocksEffectiveAgainst = new Block[] {Block.grass, Block.dirt, Block.sand, Block.gravel, Block.snow, Block.blockSnow, Block.blockClay, Block.tilledField, Block.slowSand, Block.mycelium, Block.cobblestone, Block.stoneDoubleSlab, Block.stoneSingleSlab, Block.stone, Block.sandStone, Block.cobblestoneMossy, Block.oreIron, Block.blockIron, Block.oreCoal, Block.blockGold, Block.oreGold, Block.oreDiamond, Block.blockDiamond, Block.ice, Block.netherrack, Block.oreLapis, Block.blockLapis, Block.oreRedstone, Block.oreRedstoneGlowing, Block.rail, Block.railDetector, Block.railPowered, Block.planks, Block.bookShelf, Block.wood, Block.chest, Block.stoneDoubleSlab, Block.stoneSingleSlab, Block.pumpkin, Block.pumpkinLantern, Block.web};
     protected Random rand;
-    public static int hammerthunder = 0;
-    public static boolean toggleflying = false;
-    public static int togglehammerability = 1;
-    public static int hammertimer = 0;
     private String itemTexture;
-
-    public static boolean throwhammer = false;
-
+    public static boolean toggleWebShooter = false;
 
     public ItemWebShooter(int var1, EnumToolSpiderMan var2)
     {
@@ -140,11 +135,18 @@ public class ItemWebShooter extends Item
      */
     public ItemStack onItemRightClick(ItemStack var1, World var2, EntityPlayer var3)
     {
-    	if (var3.inventory.hasItem(mod_spiderman.WebBallItem.itemID))
+    	if (var3.inventory.hasItem(mod_spiderman.WebBallItem.itemID) && toggleWebShooter)
     	{
         	var2.spawnEntityInWorld(new EntityWebBall(var2, var3));
         	var3.inventory.consumeInventoryItem(mod_spiderman.WebBallItem.itemID);
     	}
+    	
+    	else if (!toggleWebShooter && var3.inventory.hasItem(mod_spiderman.WebString.itemID))
+    	{
+    		var2.spawnEntityInWorld(new EntityWebSwing(var2, var3, 3, 0));
+    		var3.inventory.consumeInventoryItem(mod_spiderman.WebString.itemID);
+    	}
+    	
         return var1;
     }
 

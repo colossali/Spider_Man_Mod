@@ -1,5 +1,6 @@
-package colossali.SpiderMan.common;
+package colossali.SpiderMan.entities;
 
+import colossali.SpiderMan.common.mod_spiderman;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;

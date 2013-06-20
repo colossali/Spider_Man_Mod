@@ -25,6 +25,9 @@ import java.util.EnumSet;
 import java.util.Random;
 import java.util.logging.Level;
 import colossali.SpiderMan.client.ClientTickHandler;
+import colossali.SpiderMan.entities.EntityWebBall;
+import colossali.SpiderMan.entities.EntityWebSwing;
+import colossali.SpiderMan.entities.RadioactiveSpider;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
@@ -40,12 +43,12 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 @Mod(
         modid = "colossali_SpiderMan",
         name = "Spider Man",
-        version = "1.3.2"
+        version = "1.5.2"
 )
 @NetworkMod(
         clientSideRequired = true,
         serverSideRequired = false,
-        serverPacketHandlerSpec =       @NetworkMod.SidedPacketHandler(
+        serverPacketHandlerSpec =  @NetworkMod.SidedPacketHandler(
                 channels = {"SpiderMan_C"},
                 packetHandler = ServerPacketHandler.class
                 )
@@ -63,19 +66,21 @@ public class mod_spiderman
 
     public static String itemsPath = "/spiderman/items.png";
 
-    public static int SpiderManMaskID = 4060;
-    public static int SpiderManSuitID = 4210;
-    public static int SpiderManPantsID = 4080;
-    public static int SpiderManShoesID = 4090;
-    public static int SpiderSilkClothID = 4120;
-    public static int RadioactiveSpiderID = 4100;
-    public static int WebShooterID = 4121;
-    public static int WebBallItemID = 4122;
-    public static int WebBallID = 4101;
+    public static int SpiderManMaskID = 6123;
+    public static int SpiderManSuitID = 6124;
+    public static int SpiderManPantsID = 6125;
+    public static int SpiderManShoesID = 6126;
+    public static int SpiderSilkClothID = 6127;
+    public static int RadioactiveSpiderID = 6128;
+    public static int WebShooterID = 6129;
+    public static int WebBallItemID = 6130;
+    public static int WebStringID = 6131;
+    public static int WebBallID = 6132;
+    public static int WebSwingID = 412;
     public static int RadSpiID = 411; 
+    public static int RadSpawnChance = 5;
     
-    public static int webKey = 44;
-    public static int stringKey = 45;      
+    public static int webKey = 19;
 
     public static Item SpiderManMask;
     public static Item SpiderManSuit;
@@ -85,6 +90,7 @@ public class mod_spiderman
     public static Item SpiderSilkCloth;
     public static Item WebShooter;
     public static Item WebBallItem;
+    public static Item WebString;
     
     @Mod.PreInit
     public void preInit(FMLPreInitializationEvent var1)
@@ -96,42 +102,45 @@ public class mod_spiderman
         try
         {
             var2.load();
-            Property var3 = var2.get("Spider Man Mask", "item", 4060);
-            SpiderManMaskID = var3.getInt(4060);
+            Property var3 = var2.get("Spider Man Mask", "item", 6123);
+            SpiderManMaskID = var3.getInt(6123);
             
-            var3 = var2.get("Spider Man Suit", "item", 4210);
-            SpiderManSuitID = var3.getInt(4210);
+            var3 = var2.get("Spider Man Suit", "item", 6124);
+            SpiderManSuitID = var3.getInt(6124);
             
-            var3 = var2.get("Spider Man Pants", "item", 4080);
-            SpiderManPantsID = var3.getInt(4080);
+            var3 = var2.get("Spider Man Pants", "item", 6125);
+            SpiderManPantsID = var3.getInt(6125);
             
-            var3 = var2.get("Spider Man Shoes", "item", 4090);
-            SpiderManShoesID = var3.getInt(4090);
+            var3 = var2.get("Spider Man Shoes", "item", 6126);
+            SpiderManShoesID = var3.getInt(6126);
             
-            var3 = var2.get("Radioactive Spider Item", "item", 4100);
-            RadioactiveSpiderID = var3.getInt(4100);
+            var3 = var2.get("Radioactive Spider Item", "item", 6128);
+            RadioactiveSpiderID = var3.getInt(6128);
             
             var3 = var2.get("Radioactive Spider", "mob", 411);
             RadSpiID = var3.getInt(411);
             
-            var3 = var2.get("Spider Silk Cloth", "item", 4120);
-            SpiderSilkClothID = var3.getInt(4120);
+            var3 = var2.get("Web Swing Entity", "mob", 412);
+            WebSwingID = var3.getInt(412);
             
-            var3 = var2.get("Web Shooter", "item", 4121);
-            WebShooterID = var3.getInt(4121);
+            var3 = var2.get("Spider Silk Cloth", "item", 6127);
+            SpiderSilkClothID = var3.getInt(6127);
             
-            var3 = var2.get("Web Ball ID", "item", 4101);
-            WebBallID = var3.getInt(4101);
+            var3 = var2.get("Web Shooter", "item", 6129);
+            WebShooterID = var3.getInt(6129);
             
-            var3 = var2.get("Web Ball Item ID", "item", 4122);
-            WebBallItemID = var3.getInt(4122);
+            var3 = var2.get("Web Ball ID", "item", 6132);
+            WebBallID = var3.getInt(6132);
             
-            var3 = var2.get("webKey", "keybinding", 44);
-            webKey = var3.getInt(44);
+            var3 = var2.get("Web Ball Item ID", "item", 6130);
+            WebBallItemID = var3.getInt(6130);
             
-            var3 = var2.get("stringKey", "keybinding", 44);
-            stringKey = var3.getInt(42);
-   	 
+            var3 = var2.get("Web String ID", "item", 6131);
+            WebStringID = var3.getInt(6131);
+            
+            var3 = var2.get("webKey", "keybinding", 19);
+            webKey = var3.getInt(19);           
+  	 
       	 
         }
         catch (Exception var7)
@@ -158,7 +167,8 @@ public class mod_spiderman
      RadioactiveSpider = new ItemSpider(RadioactiveSpiderID, 4, false).setUnlocalizedName("Radioactive Spider");
      WebShooter = new ItemWebShooter(WebShooterID, EnumToolSpiderMan.SLENDER).setUnlocalizedName("Web Shooter").setFull3D();
      WebBallItem = new ItemWebBall(WebBallItemID).setUnlocalizedName("WebBallItem");
-     
+     WebString = new ItemWebString(WebStringID).setUnlocalizedName("WebString");
+
    	 proxy.load();
    	 
    	 
@@ -168,18 +178,11 @@ public class mod_spiderman
       EntityRegistry.registerGlobalEntityID(RadioactiveSpider.class, "Radioactive Spider", RadSpiID, 96210, 11020332);
       EntityRegistry.registerModEntity(RadioactiveSpider.class, "Radioactive Spider", RadSpiID, this, 1000, 1, false);
       LanguageRegistry.instance().addStringLocalization("entity.RadioactiveSpider.name", "en_US", "Radioactive Spider");
-      ModLoader.addSpawn(RadioactiveSpider.class, 2, 1, 3, EnumCreatureType.monster, BiomeGenBase.jungle);
-      
-     LanguageRegistry.addName(mod_spiderman.SpiderManMask, "Spider Man Mask");
-     LanguageRegistry.addName(mod_spiderman.SpiderManSuit, "Spider Man Suit");
-     LanguageRegistry.addName(mod_spiderman.SpiderManPants, "Spider Man Pants");
-     LanguageRegistry.addName(mod_spiderman.SpiderManShoes, "Spider Man Shoes");
-     LanguageRegistry.addName(mod_spiderman.SpiderSilkCloth, "Spider Silk Cloth");
-     LanguageRegistry.addName(mod_spiderman.RadioactiveSpider, "Radioactive Spider");
-     
+      ModLoader.addSpawn(RadioactiveSpider.class, RadSpawnChance, 1, 3, EnumCreatureType.monster, BiomeGenBase.jungle);
+      ModLoader.addSpawn(RadioactiveSpider.class, RadSpawnChance, 1, 3, EnumCreatureType.monster, BiomeGenBase.forest);
+      ModLoader.addSpawn(RadioactiveSpider.class, RadSpawnChance, 1, 3, EnumCreatureType.monster, BiomeGenBase.taiga);
 
-  	  
-  	MinecraftForge.EVENT_BUS.register(new ClientTickHandler(EnumSet.of(TickType.CLIENT)));
+  	
 		//Mask
         ModLoader.addRecipe(new ItemStack(SpiderManMask, 1), new Object[]
         		{"sss", "s s", "   ", 's', mod_spiderman.SpiderSilkCloth});
@@ -196,6 +199,12 @@ public class mod_spiderman
         ModLoader.addRecipe(new ItemStack(WebBallItem, 1), new Object[]
         		{"sss", "sss", "sss", 's', Item.silk});
         
+        ModLoader.addRecipe(new ItemStack(WebString, 1), new Object[]
+        		{"  s", " s ", "s  ", 's', Item.silk});
+        
+        ModLoader.addRecipe(new ItemStack(WebString, 9), new Object[]
+        		{"  s", " r ", "s  ", 's', Item.silk, 'r', RadioactiveSpider});
+        
         ModLoader.addRecipe(new ItemStack(WebBallItem, 9), new Object[]
         		{"sss", "srs", "sss", 's', Item.silk, 'r', RadioactiveSpider});
         
@@ -205,6 +214,9 @@ public class mod_spiderman
         ModLoader.addRecipe(new ItemStack(SpiderSilkCloth, 3), new Object[]
         		{"rwr", "wsw", "bwb", Character.valueOf('r'), new ItemStack(Item.dyePowder, 1, 1), Character.valueOf('b'), new ItemStack(Item.dyePowder, 1, 0), 'w', Item.silk, 's', mod_spiderman.RadioactiveSpider});
 
+	//	EntityRegistry.registerModEntity(EntityWebBall.class,"Web Swing", this.WebBallID, this, 64, 20, true);
+
+        
     }
     
     public void livingHurt(LivingHurtEvent event){

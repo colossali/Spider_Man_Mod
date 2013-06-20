@@ -40,7 +40,7 @@ public class EntityWebBall extends EntityThrowable {
   * Called when this EntityThrowable hits a block or entity.
   */
  protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
-  if (!this.worldObj.isRemote) {  
+    
    int var10 = 3;
    for (int var11 = -(2 + var10 / 10); var11 < 1 + var10 / 10; ++var11)
    {
@@ -53,6 +53,6 @@ public class EntityWebBall extends EntityThrowable {
 
 
    this.setDead();
-  }
+  
  }
 }

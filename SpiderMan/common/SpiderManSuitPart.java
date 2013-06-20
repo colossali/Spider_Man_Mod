@@ -30,7 +30,7 @@ public class SpiderManSuitPart extends ItemArmor implements IArmorTextureProvide
     public void registerIcons(IconRegister iconRegister)
     {
     	
-             itemIcon = iconRegister.registerIcon("Spiderman:"+itemTexture);
+             itemIcon = iconRegister.registerIcon("SpiderMan:"+itemTexture);
              
     }
 
