@@ -42,6 +42,8 @@ public class EntityWebBall extends EntityThrowable {
  protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
     
    int var10 = 3;
+   
+   if(!this.worldObj.isRemote){
    for (int var11 = -(2 + var10 / 10); var11 < 1 + var10 / 10; ++var11)
    {
        for (int var12 = -(2 + var10 / 10); var12 < 1 + var10 / 10; ++var12)
@@ -50,7 +52,7 @@ public class EntityWebBall extends EntityThrowable {
            
        }
    }
-
+   }
 
    this.setDead();
   
